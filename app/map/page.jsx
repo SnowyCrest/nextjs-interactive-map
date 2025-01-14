@@ -15,7 +15,7 @@ export default function MapPage() {
             </p>
             <InteractiveMap />
             <p className="text-lg text-white text-center mt-4">
-              Made by <a href="https://github.com/SnowyCrest" className="text-sky-400 hover:underline">SnowyCrest</a> on Github
+              Made by <a href="https://github.com/SnowyCrest" className="text-sky-400 hover:underline font-bold">SnowyCrest</a> on <a href="https://github.com/SnowyCrest/nextjs-interactive-map" className="text-sky-400 hover:underline font-bold">Github</a>
             </p>
           </div>
         </div>
