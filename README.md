@@ -15,6 +15,10 @@ An interactive web application built with Next.js that allows users to create an
 - 📍 Real-time coordinate display
 - 🔄 Toggle marker interaction mode
 
+| Add and remove markers     | View information on the markers   |
+| -------------------------- | --------------------------------- |
+| ![](./app/assets/MapShowcase1) | ![](./assets/MapShowcase2.png)    |
+
 ## 🚀 Getting Started
 
 1. Clone the repository:

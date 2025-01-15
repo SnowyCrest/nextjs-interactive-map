@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useCallback, useState } from 'react'
+import React, { useRef, useCallback, useState, useEffect } from 'react'
 import Map, { Marker, NavigationControl, ScaleControl } from 'react-map-gl'
 import { MapPin, X } from 'lucide-react'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -11,7 +11,23 @@ export default function InteractiveMap() {
   const [interactionsEnabled, setInteractionsEnabled] = useState(true)
   const [newMarkerModal, setNewMarkerModal] = useState(null)
   const [selectedMarker, setSelectedMarker] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const mapRef = useRef(null)
+
+  useEffect(() => {
+    const fetchMarkers = async () => {
+      try {
+        const response = await fetch('/api/markers')
+        const data = await response.json()
+        setMarkers(data)
+      } catch (error) {
+        console.error('Error fetching markers:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchMarkers()
+  }, [])
 
   const handleClick = useCallback((event) => {
     if (!interactionsEnabled) return
@@ -34,11 +50,20 @@ export default function InteractiveMap() {
     }
   }, [])
 
-  const removeMarker = useCallback((markerId) => {
+  const removeMarker = useCallback(async (markerId) => {
     if (!interactionsEnabled) return
-    setMarkers((prevMarkers) => 
-      prevMarkers.filter((marker) => marker.id !== markerId)
-    )
+    try {
+      const response = await fetch('/api/markers', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: markerId })
+      })
+      if (response.ok) {
+        setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== markerId))
+      }
+    } catch (error) {
+      console.error('Error removing marker:', error)
+    }
   }, [interactionsEnabled])
 
   const handleMarkerClick = useCallback((e, marker) => {
@@ -46,9 +71,29 @@ export default function InteractiveMap() {
     setSelectedMarker(selectedMarker?.id === marker.id ? null : marker)
   }, [selectedMarker])
 
-  const handleNewMarkerSubmit = (markerData, title, description, imageUrl, links) => {
-    setMarkers(prev => [...prev, { ...markerData, title, description, imageUrl, links }])
+  const handleNewMarkerSubmit = async (markerData, title, description, imageUrl, links) => {
+    const newMarker = { ...markerData, title, description, imageUrl, links }
+    try {
+      const response = await fetch('/api/markers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newMarker)
+      })
+      if (response.ok) {
+        setMarkers(prev => [...prev, newMarker])
+      }
+    } catch (error) {
+      console.error('Error saving marker:', error)
+    }
     setNewMarkerModal(null)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="relative w-full h-[600px] rounded-lg overflow-hidden flex items-center justify-center bg-black/75">
+        <div className="text-white text-xl">Loading map data...</div>
+      </div>
+    )
   }
 
   return (
@@ -114,9 +159,9 @@ export default function InteractiveMap() {
       )}
 
       {selectedMarker && (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/85 backdrop-blur-md rounded-lg shadow-xl max-w-md w-96 transform transition-all duration-300 ease-in-out overflow-hidden">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/85 backdrop-blur-md rounded-lg shadow-xl max-w-md w-96 transform transition-all duration-300 ease-in-out max-h-[80vh] flex flex-col">
           {selectedMarker.imageUrl && (
-            <div className="w-full h-48 relative">
+            <div className="w-full h-48 flex-shrink-0">
               <img
                 src={selectedMarker.imageUrl}
                 alt={selectedMarker.title}
@@ -125,9 +170,9 @@ export default function InteractiveMap() {
             </div>
           )}
           
-          <div className="p-6">
+          <div className="p-6 overflow-y-auto overflow-x-hidden flex-1">
             <div className="flex justify-between items-start mb-4">
-              <h3 className="font-semibold text-xl text-white">{selectedMarker.title}</h3>
+              <h3 className="font-semibold text-xl text-white break-words mr-2">{selectedMarker.title}</h3>
               <button 
                 onClick={() => setSelectedMarker(null)}
                 className="text-gray-300 hover:text-white transition-colors"
@@ -138,7 +183,7 @@ export default function InteractiveMap() {
             </div>
 
             <div className="mb-4">
-              <p className="text-gray-300 text-base leading-relaxed">{selectedMarker.description}</p>
+              <p className="text-gray-300 text-base leading-relaxed break-words">{selectedMarker.description}</p>
             </div>
 
             {selectedMarker.links && selectedMarker.links.length > 0 && (
@@ -146,12 +191,12 @@ export default function InteractiveMap() {
                 <h4 className="font-semibold text-sm mb-2 text-white">Links:</h4>
                 <ul className="space-y-1">
                   {selectedMarker.links.map((link, index) => (
-                    <li key={index}>
+                    <li key={index} className="break-words">
                       <a
                         href={link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sky-400 hover:text-sky-300 hover:underline text-sm break-all"
+                        className="text-sky-400 hover:text-sky-300 hover:underline text-sm inline-block"
                       >
                         {link}
                       </a>
