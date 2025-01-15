@@ -17,7 +17,7 @@ An interactive web application built with Next.js that allows users to create an
 
 | Add and remove markers     | View information on the markers   |
 | -------------------------- | --------------------------------- |
-| ![](./app/assets/MapShowcase1) | ![](./assets/MapShowcase2.png)    |
+| ![Map1](./app/assets/MapShowcase1.png) | ![Map2](./app/assets/MapShowcase2.png)    |
 
 ## 🚀 Getting Started
 
