@@ -10,14 +10,14 @@ An interactive web application built with Next.js that allows users to create an
 - 🎯 Click-to-add marker functionality
 - 🗑️ Remove markers with a single click
 - 📱 Responsive design with a clean, modern interface
+- 🌟 Beautiful gradient borders and glass-morphism effects
+- 🎨 Dark mode optimized UI
 - 📍 Real-time coordinate display
 - 🔄 Toggle marker interaction mode
 
-![Globe Interface](./app/assets/MapShowcase2.png)
-*Ability to add and remove markers on the map*
-
-![Marker Interface](./app/assets/MapShowcase1.png)
-*Customize info boxes and let users view them*
+| Add and remove markers     | View information on the markers   |
+| -------------------------- | --------------------------------- |
+| ![Map1](./app/assets/MapShowcase1.png) | ![Map2](./app/assets/MapShowcase2.png)    |
 
 ## 🚀 Getting Started
 
