@@ -9,9 +9,6 @@ An interactive web application built with Next.js that allows users to create an
 - 🔗 Include multiple links for each marker
 - 🎯 Click-to-add marker functionality
 - 🗑️ Remove markers with a single click
-- 📱 Responsive design with a clean, modern interface
-- 🌟 Beautiful gradient borders and glass-morphism effects
-- 🎨 Dark mode optimized UI
 - 📍 Real-time coordinate display
 - 🔄 Toggle marker interaction mode
 
