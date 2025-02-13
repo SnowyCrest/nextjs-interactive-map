@@ -14,7 +14,7 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "Nextjs Interactive Map",
-  description: "Interactive Map built on Next JS",
+  description: "🌍 Interactive Map by SnowyCrest built with Next JS",
 };
 
 export default function RootLayout({ children }) {
