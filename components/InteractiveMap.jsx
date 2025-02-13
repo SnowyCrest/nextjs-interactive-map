@@ -3,6 +3,7 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react'
 import Map, { Marker, NavigationControl, ScaleControl } from 'react-map-gl'
 import { MapPin, X } from 'lucide-react'
+import Image from 'next/image'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 export default function InteractiveMap() {
@@ -161,11 +162,13 @@ export default function InteractiveMap() {
       {selectedMarker && (
         <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/85 backdrop-blur-md rounded-lg shadow-xl max-w-md w-96 transform transition-all duration-300 ease-in-out max-h-[80vh] flex flex-col">
           {selectedMarker.imageUrl && (
-            <div className="w-full h-48 flex-shrink-0">
-              <img
+            <div className="w-full h-48 flex-shrink-0 relative">
+              <Image
                 src={selectedMarker.imageUrl}
                 alt={selectedMarker.title}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 384px"
               />
             </div>
           )}
